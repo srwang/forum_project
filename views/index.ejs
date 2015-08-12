@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<link rel="stylesheet" href="http://localhost:3000/main.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<body>
+	<div id="log-in">
+		<form action="" method="GET">
+			<label for="userName">User Name</label>
+			<input type="text" name="userName">
+			<label for="password">Password</label>
+			<input type="text" name="password">
+			<button>Log In!</button>
+		</form>
+		<p>Or <a href="/dreamlucid/username">Create A New Account</a></p>
+	</div>
+	<header>
+		<h1>DreamLucid</h1>
+		<p id="header-text-small">Architecting the world of REM connections</p> 
+	</header>
+	<div class="main-content">
+		<%topics.forEach(function(topic){%>
+			<div class="wrapper topic-wrapper">		
+				<h3><%=topic.title%></h3>
+				<h4><%=topic.summary%></h4>
+			</div>
+		<%});%>
+		<form action="/dreamlucid/create" method="GET">
+			<button>CREATE a new topic!</button>
+		</form>
+	</div>
+</body>
+	<script src="http://localhost:3000/main.js"></script>
+<html>

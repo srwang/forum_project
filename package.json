@@ -1,0 +1,19 @@
+{
+  "name": "forum",
+  "version": "1.0.0",
+  "description": "User Stories: -user starts on landing page, which shows forum topics     -can create username using unput box at upper right     -can click and add new topic using button at bottom -on topic page:     -can add new post using input box     -can add a comment using box/ (will pop out comment)/comment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srwang/forum_project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/srwang/forum_project/issues"
+  },
+  "homepage": "https://github.com/srwang/forum_project#readme"
+}
