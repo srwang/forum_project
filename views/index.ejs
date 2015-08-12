@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
 	<link rel="stylesheet" href="http://localhost:3000/main.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <body>
@@ -14,19 +15,27 @@
 		<p>Or <a href="/dreamlucid/username">Create A New Account</a></p>
 	</div>
 	<header>
-		<h1>DreamLucid</h1>
+		<h1>Dream Lucid</h1>
 		<p id="header-text-small">Architecting the world of REM connections</p> 
 	</header>
 	<div class="main-content">
-		<%topics.forEach(function(topic){%>
+		<%for(i=topics.length; i--; i>-1){%>
 			<div class="wrapper topic-wrapper">		
-				<h3><%=topic.title%></h3>
-				<h4><%=topic.summary%></h4>
+				<h3><a href="/dreamlucid/topic/<%=topics[i].id%>"><%=topics[i].title%></a></h3>
+				<h4><%=topics[i].summary%></h4>
 			</div>
-		<%});%>
-		<form action="/dreamlucid/create" method="GET">
-			<button>CREATE a new topic!</button>
-		</form>
+		<%}%>
+		<button class="open-modal">CREATE a new topic!</button>
+		<div class="overlay"></div>
+		<div class="modal" id="modal-new-topic">
+			<button class="close">X</button> 
+			<form action="dreamlucid/topic" method="POST">
+				<input type="text" name="title" placeholder="Post Title">
+				<input id="topic-summary" type="text" name="summary" placeholder="150-word Summary">
+				<input id="topic-description" type="text" name="body" placeholder="A longer description of this topic. This will show up as the stickied post on the topic page.">
+				<button>Submit</button>
+			</form>
+		</div>
 	</div>
 </body>
 	<script src="http://localhost:3000/main.js"></script>

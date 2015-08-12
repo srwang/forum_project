@@ -15,29 +15,17 @@ CREATE TABLE topics (
 	title TEXT,
 	summary TEXT,
 	body TEXT,
-	likes_count INTEGER,
 	user_id INTEGER,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (user_id) REFERENCES users(id)
 );
-CREATE TABLE posts (
-	id INTEGER PRIMARY KEY autoincrement,
-	body TEXT,
-	likes_count INTEGER,
-	user_id INTEGER,
-	topic_id TEXT,  
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	FOREIGN KEY (user_id) REFERENCES users(id),
-	FOREIGN KEY (topic_id) REFERENCES topics(id)
-);
 CREATE TABLE comments (
 	id INTEGER PRIMARY KEY autoincrement,
 	body TEXT,
-	post_id INTEGER,
+	like_count INTEGER,
+	topic_id INTEGER,
 	user_id INTEGER, 
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	FOREIGN KEY (user_id) REFERENCES users(id),
-	FOREIGN KEY (post_id) REFERENCES post(id)
+	FOREIGN KEY (user_id) REFERENCES users(id)
 );

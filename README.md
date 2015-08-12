@@ -9,17 +9,16 @@ User Stories:
     -can click and add new topic using button at bottom
 -on topic page:
     -can add new post using input box
+    -can delete/edit post
     -can add a comment using box/ (will pop out comment)/comment
 
 Routing:
 -landing: /dreamlucid
 -go to create username: /dreamlucid/username
--create username page: /dreamlucid/username/:userName
--create topic: /dreamlucid/topic
+-create username page: /dreamlucid/username/:userID
 -topic page: /dreamlucid/topic/:topicID
--create posts: /dreamlucid/topic/:topicID/:postId
--create comments: /dreamlucid/topic/:topicID/:commentId
--edit comments: /dreamlucid/topic/:topicID/:commentId/edit
+-create comments: /dreamlucid/topic/:topicID/comment
+-edit comments: /dreamlucid/topic/:topicID/comment/:commentId/edit
 
 My ERD:
 user: id, username, password, postcount, datestamp
@@ -38,11 +37,14 @@ Pseudocode:
     -app.js does db.all to get topics information
 
 -topic page:
-    -app.js does db.all to get all posts associated with specific topic id
+    -app.js does db.all to get all comments associated with specific topic id
     -each topic has a "like" option- onclick, increment and resave topic's "likecount" in sql
         -run return array of topics in js to sort by likecount before rendering
     -each_topic.ejs creates text for each topic and form for comments
     -each comment will include an edit option (on edit, will say "edited")- use PUT for this, route to /edit and then back to /dreamlucid/:topicName
+
+-create comment count:
+    -create a nav drop-down that will allow user to sort posts by: most recent, comment count
 
 -comments
 -create logout button

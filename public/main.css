@@ -1,5 +1,55 @@
+body {
+	margin: 20px 150px;
+}
+
 .wrapper {
 	margin: 10px;
 	padding: 20px;
 	background-color: lightblue;
 }
+
+header:hover {
+	cursor: pointer;
+}
+
+.modal {
+	display: none;
+	background-color: white;
+	position: fixed;
+	bottom: 10%;
+	left: 30%;
+	z-index: 12;
+	padding: 50px;
+}
+
+#modal-new-topic {
+	display: none;
+}
+
+#topic-summary {
+	width: 100%;
+	height: 50px;
+}
+
+#topic-description {
+	width: 100%;
+	height: 150px;
+}
+
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	z-index: 10;
+	background-color: rgba(0,0,0,0.5);
+	display: none;
+}
+
+.comment {
+	width: 100%;
+	height: 150px;
+}
+
+
