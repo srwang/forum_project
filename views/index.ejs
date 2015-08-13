@@ -18,6 +18,14 @@
 		<h1>Dream Lucid</h1>
 		<p id="header-text-small">Architecting the world of REM connections</p> 
 	</header>
+	<form action="/dreamlucid/layout" method="POST">
+		<label for="chooseOrder">Order Topics By:</label>
+		<select name="chooseOrder">
+		  <option value="recent" selected>Most Recent Updates</option>
+		  <option value="comments">Most Commented</option>
+		</select>
+	  <button>Submit</button>
+	</form>
 	<div class="main-content">
 		<%for(i=topics.length; i--; i>-1){%>
 			<div class="wrapper topic-wrapper">		

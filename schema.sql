@@ -15,6 +15,8 @@ CREATE TABLE topics (
 	title TEXT,
 	summary TEXT,
 	body TEXT,
+	comment_count INTEGER,
+	comment_update TEXT,
 	user_id INTEGER,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (user_id) REFERENCES users(id)

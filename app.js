@@ -4,6 +4,7 @@ var ejs = require('ejs');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var urlencodedBodyParser = bodyParser.urlencoded({extended: false});
+var _ = require('underscore');
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('dreamlucid.db');
 var user_id;
@@ -19,9 +20,37 @@ app.get('/', function (req, res){
 
 app.get('/dreamlucid', function (req, res){
 	db.all('SELECT * FROM topics', function (err, topics){
+		
+		app.post('/dreamlucid/layout', function (req, res){ //working here
+			var order = req.body.chooseOrder;
+			if (order === "comments") {
+				// db.all('SELECT topics.id AS id, topics.title, topics.summary, comments.id AS comments_id FROM topics INNER JOIN comments ON topics.id = comments.topic_id', function (err, tables){
+				// 	var groupedTable = _.groupBy(tables, function(table){
+				// 		return table.topic_id
+				// 	});
+
+				// 	groupedTable = _.values(groupedTable)
+					
+				// 	groupedTable = groupedTable.sort(function(a, b){
+				// 		return b.length - a.length
+				// 	});
+
+				// 	topics = _.uniq(groupedTable[0], true, function(table){
+				// 		return table.id
+				// 	});
+				// 	console.log(topics);
+				// 	res.redirect('/dreamlucid');
+				// })
+			}
+		})
 		res.render('index.ejs', {topics: topics});
 	})
-})
+
+}) //change the ordering here
+
+
+// db.all('SELECT * FROM comments ORDER BY like_count DESC', function (err, comments){
+// 	console.log(comments);
 
 app.get('/dreamlucid/username', function (req, res){
 	res.render('create_username.ejs');
@@ -44,7 +73,7 @@ app.get('/dreamlucid/username/:userID/created', function (req, res){
 })
 
 app.post('/dreamlucid/topic', function (req, res){
-	db.run('INSERT INTO topics (title, summary, body, user_id) VALUES (?,?,?,?)', req.body.title, req.body.summary, req.body.body, user_id, function (err){
+	db.run('INSERT INTO topics (title, summary, body, comment_count, comment_update, user_id) VALUES (?,?,?,?,?,?)', req.body.title, req.body.summary, req.body.body, 0, "none", user_id, function (err){
 		if (err) throw err;
 	})
 	res.redirect('/dreamlucid');
@@ -62,6 +91,19 @@ app.post('/dreamlucid/topic/:topicID/comment', function (req, res){
 	db.run('INSERT INTO comments (body, like_count, topic_id, user_id) VALUES (?,?,?,?)', req.body.replyBody, 0, parseInt(req.params.topicID), user_id, function (err){
 		if (err) throw err;
 	})
+	db.get('SELECT * FROM comments where topic_id=?', parseInt(req.params.topicID), function (err, comment){
+		db.run('UPDATE topics SET comment_update=? WHERE id=?', comment.updated_at, parseInt(req.params.topicID), function (err){
+			if (err) throw err;
+		})
+	})
+
+	db.get('SELECT * FROM topics WHERE id=?', parseInt(req.params.topicID), function (err, topic){
+		var comment_count = topic.comment_count;
+		comment_count++;
+		db.run('UPDATE topics SET comment_count=? WHERE id=?', comment_count, parseInt(req.params.topicID), function (err){
+			if (err) throw err;
+		})
+	})
 	res.redirect('/dreamlucid/topic/' + req.params.topicID);
 })
 
@@ -69,7 +111,6 @@ app.post('/dreamlucid/topic/:topicID/comment/:commentID', function (req, res){
 	db.get('SELECT like_count FROM comments where id=?', req.params.commentID, function (err, comment){
 		if (err) throw err;
 		else {
-			console.log(comment);
 			like_count = comment.like_count + 1;
 
 			db.run('UPDATE comments SET like_count=? WHERE id=?', like_count, req.params.commentID, function (err){
