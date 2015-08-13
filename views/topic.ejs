@@ -13,6 +13,7 @@
 		<h3><%=topic.summary%></h3>
 		<div class="wrapper topic-wrapper">		
 			<p><%=topic.body%></p>
+			<p>Posted by USER at <%=topic.created_at%></p>
 		</div>
 		<button class="reply-button">Leave Comment</button>
 		<form class="reply-form" action='/dreamlucid/topic/<%=topic.id%>/comment' method='POST'>
@@ -26,7 +27,14 @@
 				</form>
 				<p><%=comments[i].like_count%> Likes</p>
 				<p><%=comments[i].body%></p>
+				<%if (comments[i].created_at !== comments[i].updated_at){%>
+					<p>Edited by USER at <%=comments[i].updated_at%></p>
+				<%}%>
+				<p>Posted by USER at <%=comments[i].created_at%></p>
 			</div>
+		<form action='/dreamlucid/topic/<%=topic.id%>/comment/<%=comments[i].id%>/edit' method='GET'>
+			<button>Edit</button>
+		</form>
 <!-- 			<button class="comment-button>" id="button-<%=i%>">Leave Reply</button>
 			<form class="comment-form>" id= "form<%=i%>" action='/dreamlucid/topic/<%=topic.id%>/comment' method='POST'>
 				<input class="comment" type="text" name="commentBody" placeholder="Comment on this comment">

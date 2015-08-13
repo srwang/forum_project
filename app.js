@@ -36,9 +36,6 @@ app.post('/dreamlucid/layout', function (req, res){
 	res.redirect('/dreamlucid');	
 })
 
-// db.all('SELECT * FROM comments ORDER BY like_count DESC', function (err, comments){
-// 	console.log(comments);
-
 app.get('/dreamlucid/username', function (req, res){
 	res.render('create_username.ejs');
 })
@@ -106,6 +103,22 @@ app.post('/dreamlucid/topic/:topicID/comment/:commentID', function (req, res){
 		res.redirect('/dreamlucid/topic/' + req.params.topicID);
 		}
 	})
+})
+
+app.get('/dreamlucid/topic/:topicID/comment/:commentID/edit', function (req, res){ //working here
+	db.get('SELECT * FROM comments where id=?', parseInt(req.params.commentID), function (err, comment){
+		if (err) throw err;
+		else {
+			res.render('edit_comment.ejs', {comment: comment});
+		}
+	})
+})
+
+app.put('/dreamlucid/topic/:topicID/comment/:commentID', function (req, res){
+	db.run('UPDATE comments SET body=? where id=?', req.body.editCommentBody, parseInt(req.params.commentID), function (err){
+		if (err) throw err;
+	})
+	res.redirect('/dreamlucid/topic/' + req.params.topicID);
 })
 
 app.get('*', function(req, res, next) {

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+	<link rel="stylesheet" href="http://localhost:3000/main.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<body>
+	<header>
+		<h1>Dream Lucid</h1>
+		<p id="header-text-small">Architecting the world of REM connections</p> 
+	</header>
+	<h1>Edit your comment</h1>
+	<div class="wrapper" id="wrapper-comment-edit">
+		<form action='/dreamlucid/topic/<%=comment.topic_id%>/comment/<%=comment.id%>?_method=PUT' method='POST'>
+			<input class="comment" type='text' name='editCommentBody' value=<%=comment.body%>>
+			<button>Submit</button>
+		</form>
+	</div>
+</body>
+	<script src="http://localhost:3000/main.js"></script>
+<html>
