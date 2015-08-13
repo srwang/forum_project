@@ -8,6 +8,7 @@ var _ = require('underscore');
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('dreamlucid.db');
 var user_id;
+var sort = "recent";
 
 app.use(urlencodedBodyParser);
 app.use(methodOverride('_method'));
@@ -19,35 +20,21 @@ app.get('/', function (req, res){
 })
 
 app.get('/dreamlucid', function (req, res){
-	db.all('SELECT * FROM topics', function (err, topics){
-		
-		app.post('/dreamlucid/layout', function (req, res){ //working here
-			var order = req.body.chooseOrder;
-			if (order === "comments") {
-				// db.all('SELECT topics.id AS id, topics.title, topics.summary, comments.id AS comments_id FROM topics INNER JOIN comments ON topics.id = comments.topic_id', function (err, tables){
-				// 	var groupedTable = _.groupBy(tables, function(table){
-				// 		return table.topic_id
-				// 	});
-
-				// 	groupedTable = _.values(groupedTable)
-					
-				// 	groupedTable = groupedTable.sort(function(a, b){
-				// 		return b.length - a.length
-				// 	});
-
-				// 	topics = _.uniq(groupedTable[0], true, function(table){
-				// 		return table.id
-				// 	});
-				// 	console.log(topics);
-				// 	res.redirect('/dreamlucid');
-				// })
-			}
+	if (sort === "comments") {
+		db.all('SELECT * FROM topics ORDER BY comment_count DESC', function (err, topics){
+			res.render('index.ejs', {topics: topics, sort: sort});
 		})
-		res.render('index.ejs', {topics: topics});
-	})
+	} else if (sort === "recent") {
+		db.all('SELECT * FROM topics ORDER BY comment_update DESC', function (err, topics){
+			res.render('index.ejs', {topics: topics, sort: sort});
+		})
+	}
+}) 
 
-}) //change the ordering here
-
+app.post('/dreamlucid/layout', function (req, res){ 
+	sort = req.body.chooseOrder;
+	res.redirect('/dreamlucid');	
+})
 
 // db.all('SELECT * FROM comments ORDER BY like_count DESC', function (err, comments){
 // 	console.log(comments);
@@ -79,9 +66,9 @@ app.post('/dreamlucid/topic', function (req, res){
 	res.redirect('/dreamlucid');
 })
 
-app.get('/dreamlucid/topic/:topicID', function (req, res){
+app.get('/dreamlucid/topic/:topicID', function (req, res){ //working here
 	db.get('SELECT * FROM topics WHERE id=?', req.params.topicID, function (err, topic){
-		db.all('SELECT * FROM comments WHERE topic_id=?', req.params.topicID, function (err, comments){
+		db.all('SELECT * FROM comments WHERE topic_id=? ORDER BY like_count DESC', req.params.topicID, function (err, comments){
 			res.render('topic.ejs', {topic: topic, comments: comments});		
 		})
 	})

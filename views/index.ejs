@@ -19,20 +19,26 @@
 		<p id="header-text-small">Architecting the world of REM connections</p> 
 	</header>
 	<form action="/dreamlucid/layout" method="POST">
-		<label for="chooseOrder">Order Topics By:</label>
+		<label for="chooseOrder">Sort Topics By:</label>
 		<select name="chooseOrder">
-		  <option value="recent" selected>Most Recent Updates</option>
-		  <option value="comments">Most Commented</option>
+		<%if (sort ==="recent"){%>
+			<option value="recent" selected>Most Recent Updates</option>
+			<option value="comments">Most Commented</option>
+		<%} else { %>
+			<option value="recent">Most Recent Updates</option>
+			<option value="comments" selected>Most Commented</option>
+		<%}%>
 		</select>
 	  <button>Submit</button>
 	</form>
 	<div class="main-content">
-		<%for(i=topics.length; i--; i>-1){%>
+		<%topics.forEach(function(topic){%>
 			<div class="wrapper topic-wrapper">		
-				<h3><a href="/dreamlucid/topic/<%=topics[i].id%>"><%=topics[i].title%></a></h3>
-				<h4><%=topics[i].summary%></h4>
+				<h3><a href="/dreamlucid/topic/<%=topic.id%>"><%=topic.title%></a></h3>
+				<p id="comment-count">Responses: <%=topic.comment_count%></p>
+				<h4><%=topic.summary%></h4>
 			</div>
-		<%}%>
+		<%});%>
 		<button class="open-modal">CREATE a new topic!</button>
 		<div class="overlay"></div>
 		<div class="modal" id="modal-new-topic">
