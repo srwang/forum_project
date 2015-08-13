@@ -47,9 +47,12 @@ header:hover {
 	display: none;
 }
 
-.comment {
+.comment, .reply {
 	width: 100%;
 	height: 150px;
 }
 
+.comment-form, .reply-form {
+	display: none;
+}
 

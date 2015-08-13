@@ -52,20 +52,33 @@ app.post('/dreamlucid/topic', function (req, res){
 
 app.get('/dreamlucid/topic/:topicID', function (req, res){
 	db.get('SELECT * FROM topics WHERE id=?', req.params.topicID, function (err, topic){
-		res.render('topic.ejs', {topic: topic});
+		db.all('SELECT * FROM comments WHERE topic_id=?', req.params.topicID, function (err, comments){
+			res.render('topic.ejs', {topic: topic, comments: comments});		
+		})
 	})
 })
 
 app.post('/dreamlucid/topic/:topicID/comment', function (req, res){
-	db.run('INSERT INTO comments (body, like_count, topic_id, user_id) VALUES (?,?,?,?,?)', req.body.body, 0, parseInt(req.params.topicID), userID, function (err){
+	db.run('INSERT INTO comments (body, like_count, topic_id, user_id) VALUES (?,?,?,?)', req.body.replyBody, 0, parseInt(req.params.topicID), user_id, function (err){
 		if (err) throw err;
 	})
+	res.redirect('/dreamlucid/topic/' + req.params.topicID);
 })
 
-//get all comments linked with specific topic ID
-//append that to the body of the topic page somehow
-	//repeat with the nested comment
+app.post('/dreamlucid/topic/:topicID/comment/:commentID', function (req, res){
+	db.get('SELECT like_count FROM comments where id=?', req.params.commentID, function (err, comment){
+		if (err) throw err;
+		else {
+			console.log(comment);
+			like_count = comment.like_count + 1;
 
+			db.run('UPDATE comments SET like_count=? WHERE id=?', like_count, req.params.commentID, function (err){
+				if (err) throw err;
+			})
+		res.redirect('/dreamlucid/topic/' + req.params.topicID);
+		}
+	})
+})
 
 app.get('*', function(req, res, next) {
   var err = new Error();

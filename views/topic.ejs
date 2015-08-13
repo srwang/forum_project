@@ -9,15 +9,29 @@
 		<p id="header-text-small">Architecting the world of REM connections</p> 
 	</header>
 	<div class="main-content">
-		<h1><%=topic.name%></h1>
+		<h1><%=topic.title%></h1>
 		<h3><%=topic.summary%></h3>
-			<div class="wrapper topic-wrapper">		
-				<p><%=topic.body%></p>
-			</div>
-		<form action='/dreamlucid/topic/<%=topic.id%>/comment' method='POST'>
-			<input class="comment" type="text" name="body" placeholder="Comment on this post">
-			<button>Submit</button>
+		<div class="wrapper topic-wrapper">		
+			<p><%=topic.body%></p>
+		</div>
+		<button class="reply-button">Leave Comment</button>
+		<form class="reply-form" action='/dreamlucid/topic/<%=topic.id%>/comment' method='POST'>
+			<input class="reply" type="text" name="replyBody" placeholder="Comment on this post">
+			<button class="reply-submit">Submit</button>
 		</form>
+		<%for(i=0; i<comments.length; i++){%>
+			<div class="wrapper comment-wrapper">
+				<form action='/dreamlucid/topic/<%=topic.id%>/comment/<%=comments[i].id%>' method='POST'>
+					<button>+</button>
+				</form>
+				<p><%=comments[i].body%></p>
+			</div>
+<!-- 			<button class="comment-button>" id="button-<%=i%>">Leave Reply</button>
+			<form class="comment-form>" id= "form<%=i%>" action='/dreamlucid/topic/<%=topic.id%>/comment' method='POST'>
+				<input class="comment" type="text" name="commentBody" placeholder="Comment on this comment">
+				<button class="comment-submit>" id= "submit%=i%>">Submit</button>
+			</form> -->
+		<%}%>
 </body>
 	<script src="http://localhost:3000/main.js"></script>
 <html>

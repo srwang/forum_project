@@ -50,3 +50,11 @@ Pseudocode:
 -create logout button
 -keep username passwords (boolean value true/false)?
 -stretch goal: can get a user page 
+
+embedded comments:
+    -switch all of the comments into modals (?)
+    -print all of the comments, but lump together the ones that are nested (?)
+    -print all of the comments, but 
+    create comment "level"
+    create divs inside of divs- each comment is like 75% of a div until you get to the fifth div or something, then it's 100%'
+    attach level to the comment
