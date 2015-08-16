@@ -1,11 +1,173 @@
-body {
-	margin: 20px 150px;
+.clearfix:after, .clearfix:before {
+	content: ' ';
+	display: block;
+	height: 0;
+	visibility: hidden;
+	clear: both;
 }
 
-.wrapper {
+a {
+	text-decoration: none;
+	color: #2B96B9;
+}
+
+a:hover {
+	cursor: pointer;
+	color: blue;
+}
+
+button {
+	background-color: rgba(255, 255, 255, 0.50);
+	border: none;
+	font-size: 0.8em;
+	text-transform: uppercase;
+	margin: 5px 2px;
+	padding: 10px;
+	border-radius: 5%;
+}
+
+header button, .phone-header button {
+	background-color: rgba(9, 9, 74, 0.83);
+	color: white;
+	border: 2px white solid;
+}
+
+button:hover {
+	color: blue;
+}
+
+header button:hover {
+	border: 2px blue solid;
+}
+
+.modal button, .edit-button, .reply-button, .like-button, .reply-submit {
+	float: right;
+}
+
+.reply-submit {
+	color: lightgray;
+}
+
+.close {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	background-color: white;
+	border: none;
+	color: gray;
+}
+
+.open-modal, .reply-button, .edit-button {
+	float: right;
+}
+
+* {
+	font-family: 'Signika', sans-serif;
+	font-weight: 300;
+}
+
+html, body {
+	margin: 0px;
+}
+
+body {
+	color: gray;
+}
+
+.topic-body {
+	background-color: rgb(3, 3, 25);
+}
+
+header {
+	text-align: center;
+	color: white;
+	padding: 50px;
+	font-weight: thin;
+	background-image: url('img/snow.jpg');
+	position: right bottom;
+}
+
+header h1 {
+	clear: both;
+	padding: 20px;
+	font-size: 5em;
+}
+
+header h1:hover {
+	color: blue;
+}
+
+header p {
+	font-size: 1.2em;
+}
+
+header a {
+	color: pink;
+}
+
+.phone-header {
+	display: none;
+	background-image: url('img/snow.jpg');
+	padding: 10px;
+}
+
+#log-in {
+	float: right;
+}
+
+#log-in p {
+	float: right;
+}
+
+.alt-header {
+	background-image: url('img/snow.jpg');
+	color: white;
+	padding: 10px;
+}
+
+.alt-header h1 {
+	float: left;
+}
+
+.alt-header a {
+	size: 1.2em;
+	padding: 5px;
+	color: pink;
+	float: right;
+}
+
+.main-content {
+	margin: 50px auto;
+	padding: 20px, 150px;
+	text-align: center;
+}
+
+#comment-count, .likes-count {
+	float: right;
+}
+
+#sort-topics {
+	margin: auto;
+}
+
+.topic-title {
+	float: left;
+}
+
+.topic-wrapper, .comment-wrapper {
+	clear: both;
 	margin: 10px;
 	padding: 20px;
-	background-color: lightblue;
+	background-color: rgba(225, 242, 255, 0.6);
+	margin: 30px auto;
+	border-radius: 5%;
+	padding: 20px;
+	text-align: left;
+}
+
+.first-post, .comment-wrapper {
+	background-color: rgba(255, 255, 255, 0.10);
+	color: lightgray;
 }
 
 header:hover {
@@ -20,6 +182,10 @@ header:hover {
 	left: 30%;
 	z-index: 12;
 	padding: 50px;
+}
+
+input {
+	margin: 10px 0px;
 }
 
 #modal-new-topic {
@@ -47,12 +213,69 @@ header:hover {
 	display: none;
 }
 
-.comment, .reply {
-	width: 100%;
+.reply {
+	margin: 0px auto;
+	border-radius: 5%;
+	color: gray;
+	padding: 20px;
+	width: 95%;
 	height: 150px;
 }
 
-.comment-form, .reply-form {
+.comment {
+	padding: 20px;
+	width: 50%;
+	height: 100px;
+}
+
+.wrapper-reply-form {
 	display: none;
+}
+
+@media only screen and (min-width : 375px) and (max-width : 667px) { 
+
+header {
+	display: none;
+}
+
+.phone-header {
+	display: block;
+	color: white;
+	text-align: center;
+}
+
+.main-content {
+	width: 100%;
+}
+
+.wrapper {
+	border-radius: 0%;
+	border-bottom: 1px solid gray;
+	margin: 0px;
+}
+
+.topic-wrapper {
+	background-color: white;
+}
+
+.first-post {
+	background-color: rgba(255, 255, 255, 0.10);
+}
+
+.modal {
+	position: fixed;
+	left: 0px;
+}
+
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 10;
+	background-color: white;
+	display: none;
+}
+
 }
 

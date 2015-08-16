@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html>
-	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
 	<link rel="stylesheet" href="http://localhost:3000/main.css">
+	<link href='http://fonts.googleapis.com/css?family=Signika:400,300' rel='stylesheet' type='text/css'>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="http://localhost:3000/js-cookie-master/src/js.cookie.js"></script>
 <body>
-	<header>
-		<h1>Dream Lucid</h1>
-		<p id="header-text-small">Architecting the world of REM connections</p> 
-	</header>
-	<h1>Edit your comment</h1>
-	<div class="wrapper" id="wrapper-comment-edit">
-		<form action='/dreamlucid/topic/<%=comment.topic_id%>/comment/<%=comment.id%>?_method=PUT' method='POST'>
-			<input class="comment" type='text' name='editCommentBody' value=<%=comment.body%>>
-			<button>Submit</button>
-		</form>
+	<div class="alt-header clearfix">
+		<h1>dreamlucid</h1><br>
+		<a href="/dreamlucid/topic/<%=comment.topic_id%>">Back</a>
+	</div>
+	<div class="pure-g">
+		<div class="main-content pure-u-3-5">
+		<h3>Edit your comment</h3>
+			<form action='/dreamlucid/topic/<%=comment.topic_id%>/comment/<%=comment.id%>?_method=PUT' method='POST'>
+				<input class="comment" type='text' name='editCommentBody' value=<%=comment.body%>></br>
+				<button>Submit</button>
+			</form>
+		</div>
 	</div>
 </body>
 	<script src="http://localhost:3000/main.js"></script>

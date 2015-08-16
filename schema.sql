@@ -8,6 +8,7 @@ CREATE TABLE users (
 	username TEXT,
 	password TEXT,
 	postcount INTEGER,
+	logged_in BOOLEAN,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE topics (
@@ -26,8 +27,9 @@ CREATE TABLE comments (
 	body TEXT,
 	like_count INTEGER,
 	topic_id INTEGER,
+	comment_id INTEGER,
 	user_id INTEGER, 
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	updated_at TIMESTAMP CURRENT_TIMESTAMP,
 	FOREIGN KEY (user_id) REFERENCES users(id)
 );

@@ -1,3 +1,4 @@
+
 $(document).ready(function(){
 	console.log("linked");
 
@@ -5,7 +6,7 @@ $(document).ready(function(){
 	var text = headerText[Math.floor(Math.random()*headerText.length)];
   	$('#header-text-small').text(text);
 
- 	$('header').click(function(){
+ 	$('.link-mainpage').click(function(){
  		location.href = "/dreamlucid";
  	})
 
@@ -21,29 +22,37 @@ $(document).ready(function(){
 
 	$('.reply-button').on('click', function(){
 		console.log('clicked');
-		$('.reply-form').slideDown('slow');
+		$('.wrapper-reply-form').slideDown('slow');
 	})
 
 	$('.reply-submit').on('click', function(){
-		$('.reply-form').slideUp('slow');
+		$('.wrapper-reply-form').slideUp('slow');
 	})
 
-	// for (i=0; i<100; i++){
-	// 	for (j=0; j<50; j++) {
-	// 			$('.' + i).find('.button' + j).click(function(){
-	// 				console.log(clicked);
-	// 			})
+	$('#create-account').click(function(){
+		console.log('clicked');
 
-	// 			// $('.-button').on('click', function(){
-	// 			// 	console.log('clicked');
-	// 			// 	$('.reply-form').slideDown('slow');
-	// 			// })
+		Cookies.remove('username');
+		Cookies.remove('password');
 
-	// 			// $('.reply-submit').on('click', function(){
-	// 			// 	$('.reply-form').slideUp('slow');
-	// 			// })			
-	// 	}		
-	// }
+		var username = $('#userName').val();
+		var password = $('#password').val();
 
+		console.log(username, password);
+
+		Cookies.set('username', username);
+		Cookies.set('password', password);
+	})
+
+	$('#login').click(function(){
+		Cookies.remove('username');
+		Cookies.remove('password');
+
+		var username = $('#login-username').val();
+		var password = $('#login-password').val();
+
+		Cookies.set('username', username);
+		Cookies.set('password', password);
+	})
 
 });

@@ -3,16 +3,17 @@
 	<link rel="stylesheet" href="http://localhost:3000/main.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <body>
-	<header>
-		<h1>Dream Lucid</h1>
-		<p id="header-text-small">Architecting the world of REM connections</p> 
-	</header>
-	<div class="main-content">
-		<h1>Welcome to Dream Lucid!</h1>
-		<h3>Your username is <%=username%>.</h3>
-		<h3>Your password is <%=password%>.</h3>
+	<div class="alt-header clearfix">
+		<h1>dreamlucid</h1><br>
+		<a href="/dreamlucid">Main Page</a>
 	</div>
-	<a href="/dreamlucid">Return to Main Page</a>
+	<div class="pure-g">
+		<div class="main-content">
+			<h3>Welcome!</h3>
+			<p>Your username is <%=username%>.</p>
+			<p>Your password is <%=password%>.</p>
+		</div>
+	</div>
 </body>
 	<script src="http://localhost:3000/main.js"></script>
 <html>

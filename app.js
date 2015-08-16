@@ -4,12 +4,15 @@ var ejs = require('ejs');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var urlencodedBodyParser = bodyParser.urlencoded({extended: false});
+var cookieParser = require('cookie-parser');
+var Cookies = require('cookies-js');
 var _ = require('underscore');
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('dreamlucid.db');
 var user_id;
 var sort = "recent";
 
+app.use(cookieParser());
 app.use(urlencodedBodyParser);
 app.use(methodOverride('_method'));
 app.set('view_engine', 'ejs');
@@ -20,6 +23,7 @@ app.get('/', function (req, res){
 })
 
 app.get('/dreamlucid', function (req, res){
+	console.log("cookies: " + req.cookies);
 	if (sort === "comments") {
 		db.all('SELECT * FROM topics ORDER BY comment_count DESC', function (err, topics){
 			res.render('index.ejs', {topics: topics, sort: sort});

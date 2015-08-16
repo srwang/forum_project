@@ -1,46 +1,67 @@
 <!DOCTYPE html>
 <html>
 	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+	<link href='http://fonts.googleapis.com/css?family=Signika:400,300' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="http://localhost:3000/main.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<body>
+	<script src="http://localhost:3000/js-cookie-master/src/js.cookie.js"></script>
+<body class="topic-body">
 	<header>
-		<h1>Dream Lucid</h1>
+		<div id="log-in">
+			<form id="login" action="/dreamlucid/login" method="GET">
+				<label for="userName">User Name</label>
+				<input id="login-username" type="text" name="userName">
+				<label for="password">Password</label>
+				<input id="login-password" type="text" name="password">
+				<button>Log In!</button>
+			</form>
+			<p>Or <a href="/dreamlucid/username">Create A New Account</a></p>
+		</div>
+		<h1 class="link-mainpage">Dream Lucid</h1>
 		<p id="header-text-small">Architecting the world of REM connections</p> 
 	</header>
-	<div class="main-content">
-		<h1><%=topic.title%></h1>
-		<h3><%=topic.summary%></h3>
-		<div class="wrapper topic-wrapper">		
-			<p><%=topic.body%></p>
-			<p>Posted by USER at <%=topic.created_at%></p>
-		</div>
-		<button class="reply-button">Leave Comment</button>
-		<form class="reply-form" action='/dreamlucid/topic/<%=topic.id%>/comment' method='POST'>
-			<input class="reply" type="text" name="replyBody" placeholder="Comment on this post">
-			<button class="reply-submit">Submit</button>
-		</form>
-		<%for(i=0; i<comments.length; i++){%>
-			<div class="wrapper comment-wrapper">
-				<form action='/dreamlucid/topic/<%=topic.id%>/comment/<%=comments[i].id%>' method='POST'>
-					<button>+</button>
-				</form>
-				<p><%=comments[i].like_count%> Likes</p>
-				<p><%=comments[i].body%></p>
-				<%if (comments[i].created_at !== comments[i].updated_at){%>
-					<p>Edited by USER at <%=comments[i].updated_at%></p>
+		<div class="pure-g">
+			<div class="main-content pure-u-3-5">
+				<h3 class="topic-title"><a href="/dreamlucid"><<</a>  <%=topic.title%></h3>
+				<div class="wrapper topic-wrapper first-post clearfix">		
+					<p>*<%=topic.body%></p>
+					<p>Posted by USER at <%=topic.created_at%></p>
+					<button class="reply-button">Leave Comment</button>
+				</div>
+				<div class="wrapper comment-wrapper clearfix wrapper-reply-form">
+					<form action='/dreamlucid/topic/<%=topic.id%>/comment' method='POST'>
+						<input class="reply" type="text" name="replyBody" placeholder="Comment on this post">
+						<button class="reply-submit">Submit</button>
+					</form>
+				</div>
+				<%for(i=0; i<comments.length; i++){%>
+					<div class="wrapper comment-wrapper clearfix">
+						<p class="likes-count"><%=comments[i].like_count%> Likes</p>
+						<p><%=comments[i].body%></p>
+						<%if (comments[i].created_at !== comments[i].updated_at){%>
+							<p>Edited by USER at <%=comments[i].updated_at%></p>
+						<%}%>
+						<p>Posted by USER at <%=comments[i].created_at%></p>
+					<form action='/dreamlucid/topic/<%=topic.id%>/comment/<%=comments[i].id%>/edit' method='GET'>
+						<button class="edit-button">Edit</button>
+					</form>
+					<form action='/dreamlucid/topic/<%=topic.id%>/comment/<%=comments[i].id%>' method='POST'>
+						<button class="like-button">Like</button>
+					</form>
+					</div>
+		<!-- 			<button class="comment-button">Leave Comment</button>
+					<form class="comment-form" action='/dreamlucid/topic/<%=topic.id%>/comment' method='POST'>
+						<input class="comment" type="text" name="replyBody" placeholder="Comment on this post">
+						<button class="comment-submit">Submit</button>
+					</form> -->
+		<!-- 			<button class="comment-button>" id="button-<%=i%>">Leave Reply</button>
+					<form class="comment-form>" id= "form<%=i%>" action='/dreamlucid/topic/<%=topic.id%>/comment' method='POST'>
+						<input class="comment" type="text" name="commentBody" placeholder="Comment on this comment">
+						<button class="comment-submit>" id= "submit%=i%>">Submit</button>
+					</form> -->
 				<%}%>
-				<p>Posted by USER at <%=comments[i].created_at%></p>
 			</div>
-		<form action='/dreamlucid/topic/<%=topic.id%>/comment/<%=comments[i].id%>/edit' method='GET'>
-			<button>Edit</button>
-		</form>
-<!-- 			<button class="comment-button>" id="button-<%=i%>">Leave Reply</button>
-			<form class="comment-form>" id= "form<%=i%>" action='/dreamlucid/topic/<%=topic.id%>/comment' method='POST'>
-				<input class="comment" type="text" name="commentBody" placeholder="Comment on this comment">
-				<button class="comment-submit>" id= "submit%=i%>">Submit</button>
-			</form> -->
-		<%}%>
+		</div>
 </body>
 	<script src="http://localhost:3000/main.js"></script>
 <html>

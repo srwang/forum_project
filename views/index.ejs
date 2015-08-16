@@ -1,56 +1,70 @@
 <!DOCTYPE html>
 <html>
 	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+	<link href='http://fonts.googleapis.com/css?family=Signika:400,300' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="http://localhost:3000/main.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <body>
-	<div id="log-in">
-		<form action="" method="GET">
+	<div class="phone-header">
+		<form id="login" action="/dreamlucid/login" method="GET">
 			<label for="userName">User Name</label>
-			<input type="text" name="userName">
+			<input id="login-username" type="text" name="userName"><br>
 			<label for="password">Password</label>
-			<input type="text" name="password">
+			<input id="login-password" type="text" name="password"><br>
 			<button>Log In!</button>
 		</form>
 		<p>Or <a href="/dreamlucid/username">Create A New Account</a></p>
 	</div>
-	<header>
-		<h1>Dream Lucid</h1>
-		<p id="header-text-small">Architecting the world of REM connections</p> 
-	</header>
-	<form action="/dreamlucid/layout" method="POST">
-		<label for="chooseOrder">Sort Topics By:</label>
-		<select name="chooseOrder">
-		<%if (sort ==="recent"){%>
-			<option value="recent" selected>Most Recent Updates</option>
-			<option value="comments">Most Commented</option>
-		<%} else { %>
-			<option value="recent">Most Recent Updates</option>
-			<option value="comments" selected>Most Commented</option>
-		<%}%>
-		</select>
-	  <button>Submit</button>
-	</form>
-	<div class="main-content">
-		<%topics.forEach(function(topic){%>
-			<div class="wrapper topic-wrapper">		
-				<h3><a href="/dreamlucid/topic/<%=topic.id%>"><%=topic.title%></a></h3>
-				<p id="comment-count">Responses: <%=topic.comment_count%></p>
-				<h4><%=topic.summary%></h4>
+		<header>
+			<div id="log-in">
+				<form id="login" action="/dreamlucid/login" method="GET">
+					<label for="userName">User Name</label>
+					<input id="login-username" type="text" name="userName">
+					<label for="password">Password</label>
+					<input id="login-password" type="text" name="password">
+					<button>Log In!</button>
+				</form>
+				<p>Or <a href="/dreamlucid/username">Create A New Account</a></p>
 			</div>
-		<%});%>
-		<button class="open-modal">CREATE a new topic!</button>
-		<div class="overlay"></div>
-		<div class="modal" id="modal-new-topic">
-			<button class="close">X</button> 
-			<form action="dreamlucid/topic" method="POST">
-				<input type="text" name="title" placeholder="Post Title">
-				<input id="topic-summary" type="text" name="summary" placeholder="150-word Summary">
-				<input id="topic-description" type="text" name="body" placeholder="A longer description of this topic. This will show up as the stickied post on the topic page.">
-				<button>Submit</button>
+			<h1 class="link-mainpage">Dream Lucid</h1>
+			<p id="header-text-small">Architecting the world of REM connections</p> 
+		</header>
+	<div class="pure-g">
+		<div class="main-content clearfix pure-u-3-5">
+			<form id="sort-topics" action="/dreamlucid/layout" method="POST">
+				<label for="chooseOrder">Sort Topics By:</label>
+				<select name="chooseOrder">
+				<%if (sort ==="recent"){%>
+					<option value="recent" selected>Most Recent Updates</option>
+					<option value="comments">Most Commented</option>
+				<%} else { %>
+					<option value="recent">Most Recent Updates</option>
+					<option value="comments" selected>Most Commented</option>
+				<%}%>
+				</select>
+			  <button>Submit</button>
 			</form>
+			<%topics.forEach(function(topic){%>
+				<div class="wrapper topic-wrapper">		
+					<p id="comment-count"><%=topic.comment_count%> Comments</p>
+					<h3><a href="/dreamlucid/topic/<%=topic.id%>"><%=topic.title%></a></h3>
+					<h4><%=topic.summary%></h4>
+				</div>
+			<%});%>
+			<button class="open-modal">Add New topic</button>
+			<div class="overlay"></div>
+			<div class="modal" id="modal-new-topic">
+				<button class="close">X</button> 
+				<form action="/dreamlucid/topic" method="POST">
+					<input type="text" name="title" placeholder="Post Title">
+					<input id="topic-summary" type="text" name="summary" placeholder="150-word Summary">
+					<input id="topic-description" type="text" name="body" placeholder="A longer description of this topic. This will show up as the stickied post.">
+					<button>Submit</button>
+				</form>
+			</div>
 		</div>
 	</div>
 </body>
+	<script src="http://localhost:3000/js-cookie-master/src/js.cookie.js"></script>
 	<script src="http://localhost:3000/main.js"></script>
 <html>
