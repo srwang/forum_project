@@ -17,7 +17,7 @@ a:hover {
 }
 
 button {
-	background-color: rgba(255, 255, 255, 0.50);
+	background-color: rgba(255, 255, 255, 0.10);
 	border: none;
 	font-size: 0.8em;
 	text-transform: uppercase;
@@ -265,6 +265,10 @@ header {
 .modal {
 	position: fixed;
 	left: 0px;
+}
+
+.open-modal {
+	float: left;
 }
 
 .overlay {

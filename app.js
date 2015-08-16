@@ -67,7 +67,7 @@ app.post('/dreamlucid/topic', function (req, res){
 	res.redirect('/dreamlucid');
 })
 
-app.get('/dreamlucid/topic/:topicID', function (req, res){ //working here
+app.get('/dreamlucid/topic/:topicID', function (req, res){
 	db.get('SELECT * FROM topics WHERE id=?', req.params.topicID, function (err, topic){
 		db.all('SELECT * FROM comments WHERE topic_id=? ORDER BY like_count DESC', req.params.topicID, function (err, comments){
 			res.render('topic.ejs', {topic: topic, comments: comments});		
@@ -80,7 +80,7 @@ app.post('/dreamlucid/topic/:topicID/comment', function (req, res){
 		if (err) throw err;
 	})
 	db.get('SELECT * FROM comments where topic_id=?', parseInt(req.params.topicID), function (err, comment){
-		db.run('UPDATE topics SET comment_update=? WHERE id=?', comment.updated_at, parseInt(req.params.topicID), function (err){
+		db.run('UPDATE topics SET comment_update=? WHERE id=?', comment.created_at, parseInt(req.params.topicID), function (err){
 			if (err) throw err;
 		})
 	})
@@ -109,7 +109,7 @@ app.post('/dreamlucid/topic/:topicID/comment/:commentID', function (req, res){
 	})
 })
 
-app.get('/dreamlucid/topic/:topicID/comment/:commentID/edit', function (req, res){ //working here
+app.get('/dreamlucid/topic/:topicID/comment/:commentID/edit', function (req, res){ 
 	db.get('SELECT * FROM comments where id=?', parseInt(req.params.commentID), function (err, comment){
 		if (err) throw err;
 		else {
@@ -118,8 +118,8 @@ app.get('/dreamlucid/topic/:topicID/comment/:commentID/edit', function (req, res
 	})
 })
 
-app.put('/dreamlucid/topic/:topicID/comment/:commentID', function (req, res){
-	db.run('UPDATE comments SET body=? where id=?', req.body.editCommentBody, parseInt(req.params.commentID), function (err){
+app.put('/dreamlucid/topic/:topicID/comment/:commentID', function (req, res){ 
+	db.run('UPDATE comments SET body=? where id=?', req.body.editCommentBody + "\nEdited", parseInt(req.params.commentID), function (err){
 		if (err) throw err;
 	})
 	res.redirect('/dreamlucid/topic/' + req.params.topicID);

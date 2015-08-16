@@ -13,7 +13,7 @@
 		<div class="main-content pure-u-3-5">
 		<h3>Edit your comment</h3>
 			<form action='/dreamlucid/topic/<%=comment.topic_id%>/comment/<%=comment.id%>?_method=PUT' method='POST'>
-				<input class="comment" type='text' name='editCommentBody' value=<%=comment.body%>></br>
+				<input class="comment" type='text' name='editCommentBody' placeholder="<%=comment.body%>"></br>
 				<button>Submit</button>
 			</form>
 		</div>

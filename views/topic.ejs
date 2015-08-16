@@ -21,7 +21,7 @@
 		<p id="header-text-small">Architecting the world of REM connections</p> 
 	</header>
 		<div class="pure-g">
-			<div class="main-content pure-u-3-5">
+			<div class="main-content pure-u-4-5">
 				<h3 class="topic-title"><a href="/dreamlucid"><<</a>  <%=topic.title%></h3>
 				<div class="wrapper topic-wrapper first-post clearfix">		
 					<p>*<%=topic.body%></p>
@@ -38,9 +38,6 @@
 					<div class="wrapper comment-wrapper clearfix">
 						<p class="likes-count"><%=comments[i].like_count%> Likes</p>
 						<p><%=comments[i].body%></p>
-						<%if (comments[i].created_at !== comments[i].updated_at){%>
-							<p>Edited by USER at <%=comments[i].updated_at%></p>
-						<%}%>
 						<p>Posted by USER at <%=comments[i].created_at%></p>
 					<form action='/dreamlucid/topic/<%=topic.id%>/comment/<%=comments[i].id%>/edit' method='GET'>
 						<button class="edit-button">Edit</button>
@@ -49,16 +46,6 @@
 						<button class="like-button">Like</button>
 					</form>
 					</div>
-		<!-- 			<button class="comment-button">Leave Comment</button>
-					<form class="comment-form" action='/dreamlucid/topic/<%=topic.id%>/comment' method='POST'>
-						<input class="comment" type="text" name="replyBody" placeholder="Comment on this post">
-						<button class="comment-submit">Submit</button>
-					</form> -->
-		<!-- 			<button class="comment-button>" id="button-<%=i%>">Leave Reply</button>
-					<form class="comment-form>" id= "form<%=i%>" action='/dreamlucid/topic/<%=topic.id%>/comment' method='POST'>
-						<input class="comment" type="text" name="commentBody" placeholder="Comment on this comment">
-						<button class="comment-submit>" id= "submit%=i%>">Submit</button>
-					</form> -->
 				<%}%>
 			</div>
 		</div>
