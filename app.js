@@ -5,7 +5,6 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var urlencodedBodyParser = bodyParser.urlencoded({extended: false});
 var cookieParser = require('cookie-parser');
-var Cookies = require('cookies-js');
 var _ = require('underscore');
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('dreamlucid.db');
@@ -22,36 +21,96 @@ app.get('/', function (req, res){
 	res.redirect('/dreamlucid');
 })
 
-app.get('/dreamlucid', function (req, res){
-	console.log("cookies: " + req.cookies);
-	if (sort === "comments") {
-		db.all('SELECT * FROM topics ORDER BY comment_count DESC', function (err, topics){
-			res.render('index.ejs', {topics: topics, sort: sort});
+//geotagging; googlemaps API
+//create user page with stats
+
+
+app.post('/', function (req, res){
+	res.cookie('user', req.body.userName);
+	res.cookie('pw', req.body.password);
+
+	db.run('INSERT INTO users (username, password, postcount, logged_in) VALUES (?,?,?,?)', req.body.userName, req.body.password, 0, true, function (err){
+		if (err) throw err;
+	})
+	db.get('SELECT * FROM users WHERE username=?', req.body.userName, function (err, user){
+		res.redirect('/dreamlucid/username/' + user.id + "/created")
+	})
+})
+
+app.get('/dreamlucid', function (req, res){ 
+	var sort = "recent";
+	if (req.cookies.sort) {
+		sort = req.cookies.sort;
+	}
+	if (req.cookies.user) {
+		db.get('SELECT * FROM users WHERE username=?', req.cookies.user, function (err, thisUser){
+			renderPage(thisUser);	
 		})
-	} else if (sort === "recent") {
-		db.all('SELECT * FROM topics ORDER BY comment_update DESC', function (err, topics){
-			res.render('index.ejs', {topics: topics, sort: sort});
-		})
+	} else {
+		if (sort === "comments") {
+			var user = {"logged_in": 2}
+			db.all('SELECT * FROM topics ORDER BY comment_count DESC', function (err, topics){
+				res.render('index.ejs', {topics: topics, sort: sort, user: user});
+			})
+		} else if (sort === "recent") {
+			console.log("here")
+			db.all('SELECT * FROM topics ORDER BY comment_update DESC', function (err, topics){
+				res.render('index.ejs', {topics: topics, user: "wow man users"});
+			})
+		}	
+		renderPage({"logged_in": 2});	
+	}
+
+	function renderPage (insertUser) {
+		if (sort === "comments") {
+			db.all('SELECT * FROM topics ORDER BY comment_count DESC', function (err, topics){
+				res.render('index.ejs', {topics: topics, sort: sort, user: insertUser});
+			})
+		} else if (sort === "recent") {
+			console.log("here")
+			db.all('SELECT * FROM topics ORDER BY comment_update DESC', function (err, topics){
+				res.render('index.ejs', {topics: topics, sort: sort, user: insertUser});
+			})
+		}			
 	}
 }) 
 
+app.get('/dreamlucid/login', function (req, res){ 
+	db.get('SELECT * FROM users WHERE username=?', req.query.userName, function (err, user){
+		if (user) {
+			if (user.password === req.query.password) {
+				db.run('UPDATE users SET logged_in=? WHERE username=?', 1, req.cookies.user,function (err){
+					if (err) throw err;
+					res.cookie('user', req.query.userName, { path: '/' });
+					res.cookie('pw', req.query.password, { path: '/' });
+					res.render('login.ejs', {text: "Welcome, " + user.username});
+					console.log(user);		
+				})
+			} else {
+				res.render('login.ejs', {text: "Please type in the correct password."});
+			}
+		} else {
+			res.render('login.ejs', {text: "This username does not exist."});
+		}
+	})
+})
+
+app.put('/dreamlucid/login', function (req, res){
+	res.clearCookie('user', { path: '/' });
+	res.clearCookie('pw', { path: '/' });
+	db.run('UPDATE users SET logged_in=? WHERE username=?', 2, req.cookies.user, function (err){
+		if (err) throw err;
+	})
+	res.redirect('/dreamlucid');
+})
+
 app.post('/dreamlucid/layout', function (req, res){ 
-	sort = req.body.chooseOrder;
+	res.cookie('sort', req.body.chooseOrder, { path: '/' });
 	res.redirect('/dreamlucid');	
 })
 
 app.get('/dreamlucid/username', function (req, res){
 	res.render('create_username.ejs');
-})
-
-app.post('/dreamlucid/username/create', function (req, res){
-	db.run('INSERT INTO users (username, password, postcount) VALUES (?,?,?)', req.body.userName, req.body.password, 0, function (err){
-		if (err) throw err;
-	})
-	db.get('SELECT * FROM users WHERE username=?', req.body.userName, function (err, user){
-		user_id = user.id;
-		res.redirect('/dreamlucid/username/' + user.id + "/created")
-	})
 })
 
 app.get('/dreamlucid/username/:userID/created', function (req, res){
@@ -61,22 +120,43 @@ app.get('/dreamlucid/username/:userID/created', function (req, res){
 })
 
 app.post('/dreamlucid/topic', function (req, res){
-	db.run('INSERT INTO topics (title, summary, body, comment_count, comment_update, user_id) VALUES (?,?,?,?,?,?)', req.body.title, req.body.summary, req.body.body, 0, "none", user_id, function (err){
+	db.get('SELECT * FROM users where username=?', req.cookies.user, function (err, user){
+		console.log(user.postcount);
+		db.run('UPDATE users SET postcount=? WHERE username=?', user.postcount + 1, user.username, function (err){
+			if (err) throw err;
+		})
+	})
+	db.run('INSERT INTO topics (title, summary, body, comment_count, comment_update, username) VALUES (?,?,?,?,?,?)', req.body.title, req.body.summary, req.body.body, 0, "0", req.cookies.user, function (err){
 		if (err) throw err;
 	})
 	res.redirect('/dreamlucid');
 })
 
 app.get('/dreamlucid/topic/:topicID', function (req, res){
-	db.get('SELECT * FROM topics WHERE id=?', req.params.topicID, function (err, topic){
-		db.all('SELECT * FROM comments WHERE topic_id=? ORDER BY like_count DESC', req.params.topicID, function (err, comments){
-			res.render('topic.ejs', {topic: topic, comments: comments});		
+	if (req.cookies.user){
+		db.get('SELECT * FROM users WHERE username=?', req.cookies.user, function (err, thisUser){
+			renderPage(thisUser);
 		})
-	})
+	} else {
+		renderPage({logged_in: 2});
+	}
+	function renderPage (insertUser){
+		db.get('SELECT * FROM topics WHERE id=?', req.params.topicID, function (err, topic){
+			db.all('SELECT * FROM comments WHERE topic_id=? ORDER BY like_count DESC', req.params.topicID, function (err, comments){
+				res.render('topic.ejs', {topic: topic, comments: comments, user: insertUser});
+			})
+		})							
+	}
 })
 
 app.post('/dreamlucid/topic/:topicID/comment', function (req, res){
-	db.run('INSERT INTO comments (body, like_count, topic_id, user_id) VALUES (?,?,?,?)', req.body.replyBody, 0, parseInt(req.params.topicID), user_id, function (err){
+	db.get('SELECT * FROM users where username=?', req.cookies.user, function (err, user){
+		console.log(user.postcount)
+		db.run('UPDATE users SET postcount=? WHERE username=?', user.postcount + 1, user.username, function (err){
+			if (err) throw err;
+		})
+	})
+	db.run('INSERT INTO comments (body, like_count, topic_id, username) VALUES (?,?,?,?)', req.body.replyBody, 0, parseInt(req.params.topicID), req.cookies.user, function (err){
 		if (err) throw err;
 	})
 	db.get('SELECT * FROM comments where topic_id=?', parseInt(req.params.topicID), function (err, comment){
@@ -92,7 +172,7 @@ app.post('/dreamlucid/topic/:topicID/comment', function (req, res){
 			if (err) throw err;
 		})
 	})
-	res.redirect('/dreamlucid/topic/' + req.params.topicID);
+	res.redirect('/dreamlucid/topic/' + req.params.topicID);		
 })
 
 app.post('/dreamlucid/topic/:topicID/comment/:commentID', function (req, res){

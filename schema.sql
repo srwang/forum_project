@@ -9,6 +9,7 @@ CREATE TABLE users (
 	password TEXT,
 	postcount INTEGER,
 	logged_in BOOLEAN,
+	location, TEXT,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE topics (
@@ -18,16 +19,16 @@ CREATE TABLE topics (
 	body TEXT,
 	comment_count INTEGER,
 	comment_update TIMESTAMP,
-	user_id INTEGER,
+	username TEXT,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	FOREIGN KEY (user_id) REFERENCES users(id)
+	FOREIGN KEY (username) REFERENCES users(username)
 );
 CREATE TABLE comments (
 	id INTEGER PRIMARY KEY autoincrement,
 	body TEXT,
 	like_count INTEGER,
 	topic_id INTEGER,
-	user_id INTEGER, 
+	username, TEXT, 
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	FOREIGN KEY (user_id) REFERENCES users(id)
+	FOREIGN KEY (username) REFERENCES users(username)
 );

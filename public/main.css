@@ -75,7 +75,7 @@ body {
 }
 
 .topic-body {
-	background-color: rgb(3, 3, 25);
+	background-color: rgb(7, 7, 66);
 }
 
 header {
@@ -88,21 +88,27 @@ header {
 }
 
 header h1 {
+	background-color: rgba(1, 2, 19, 0.3);
 	clear: both;
 	padding: 20px;
 	font-size: 5em;
-}
-
-header h1:hover {
-	color: blue;
 }
 
 header p {
 	font-size: 1.2em;
 }
 
+header h1:hover {
+	cursor: pointer;
+	color: blue;
+}
+
 header a {
 	color: pink;
+}
+
+header input {
+	color: black;
 }
 
 .phone-header {
@@ -111,11 +117,28 @@ header a {
 	padding: 10px;
 }
 
-#log-in {
+#log-in, #log-out {
 	float: right;
 }
 
 #log-in p {
+	float: right;
+}
+
+#log-out {
+	display: inline-block;
+}
+
+#log-in p, #log-in form, #log-out p {
+	background-color: rgba(1, 2, 19, 0.3);
+}
+
+#log-out p {
+	float: left;
+}
+
+#log-out form {
+	margin: 5px;
 	float: right;
 }
 
@@ -140,6 +163,10 @@ header a {
 	margin: 50px auto;
 	padding: 20px, 150px;
 	text-align: center;
+}
+
+h3 {
+	color: lightgray;
 }
 
 #comment-count, .likes-count {
@@ -168,10 +195,6 @@ header a {
 .first-post, .comment-wrapper {
 	background-color: rgba(255, 255, 255, 0.10);
 	color: lightgray;
-}
-
-header:hover {
-	cursor: pointer;
 }
 
 .modal {

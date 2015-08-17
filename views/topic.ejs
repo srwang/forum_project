@@ -6,27 +6,55 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="http://localhost:3000/js-cookie-master/src/js.cookie.js"></script>
 <body class="topic-body">
-	<header>
-		<div id="log-in">
+	<div class="phone-header">
+		<% if (user.logged_in === 2 ) {%>
 			<form id="login" action="/dreamlucid/login" method="GET">
 				<label for="userName">User Name</label>
-				<input id="login-username" type="text" name="userName">
+				<input id="login-username" type="text" name="userName"><br>
 				<label for="password">Password</label>
-				<input id="login-password" type="text" name="password">
+				<input id="login-password" type="text" name="password"><br>
 				<button>Log In!</button>
 			</form>
 			<p>Or <a href="/dreamlucid/username">Create A New Account</a></p>
-		</div>
-		<h1 class="link-mainpage">Dream Lucid</h1>
-		<p id="header-text-small">Architecting the world of REM connections</p> 
-	</header>
+		<% } if (user.logged_in === 1 ) {%>
+			<p id="welcome-text">Welcome, <a href="/dreamlucid/username/<%=user.id%>"><%=user.username%></a>!</p><br>
+			<form id="logout" action="/dreamlucid/login?_method=PUT" method="POST">
+				<button>Log Out</button>
+			</form>
+		<% } %>
+	</div>
+		<header>
+			<%if (user.logged_in === 2){ %>
+				<div id="log-in">
+					<form id="login" action="/dreamlucid/login" method="GET">
+						<label for="userName">User Name</label>
+						<input id="login-username" type="text" name="userName">
+						<label for="password">Password</label>
+						<input id="login-password" type="text" name="password">
+						<button>Log In!</button>
+					</form>
+					<p>Or <a href="/dreamlucid/username">Create A New Account</a></p>
+				</div>		
+			<% } if (user.logged_in === 1 ) {%>
+				<div id="log-out">
+					<p id="welcome-text">Welcome, <a href="/dreamlucid/username/<%=user.id%>"><%=user.username%></a>!</p>
+					<form id="logout" action="/dreamlucid/login?_method=PUT" method="POST">
+						<button>Log Out</button>
+					</form>
+				</div>
+			<% } %>
+			<h1 class="link-mainpage">Dream Lucid</h1>
+			<p id="header-text-small">Architecting the world of REM connections</p> 
+		</header>
 		<div class="pure-g">
 			<div class="main-content pure-u-4-5">
 				<h3 class="topic-title"><a href="/dreamlucid"><<</a>  <%=topic.title%></h3>
 				<div class="wrapper topic-wrapper first-post clearfix">		
 					<p>*<%=topic.body%></p>
-					<p>Posted by USER at <%=topic.created_at%></p>
-					<button class="reply-button">Leave Comment</button>
+					<p>Posted by <%=topic.username%> at <%=topic.created_at%></p>
+					<% if (user.logged_in === 1 ) {%>
+						<button class="reply-button">Leave Comment</button>
+					<% } %>
 				</div>
 				<div class="wrapper comment-wrapper clearfix wrapper-reply-form">
 					<form action='/dreamlucid/topic/<%=topic.id%>/comment' method='POST'>
@@ -38,13 +66,17 @@
 					<div class="wrapper comment-wrapper clearfix">
 						<p class="likes-count"><%=comments[i].like_count%> Likes</p>
 						<p><%=comments[i].body%></p>
-						<p>Posted by USER at <%=comments[i].created_at%></p>
-					<form action='/dreamlucid/topic/<%=topic.id%>/comment/<%=comments[i].id%>/edit' method='GET'>
-						<button class="edit-button">Edit</button>
-					</form>
-					<form action='/dreamlucid/topic/<%=topic.id%>/comment/<%=comments[i].id%>' method='POST'>
-						<button class="like-button">Like</button>
-					</form>
+						<p>Posted by <%=comments[i].username%> at <%=comments[i].created_at%></p>
+					<%if (user.username === comments[i].username) {%>
+						<form action='/dreamlucid/topic/<%=topic.id%>/comment/<%=comments[i].id%>/edit' method='GET'>
+							<button class="edit-button">Edit</button>
+						</form>
+					<%}%>
+					<% if (user.logged_in === 1 && user.username !== comments[i].username) {%>
+						<form action='/dreamlucid/topic/<%=topic.id%>/comment/<%=comments[i].id%>' method='POST'>
+							<button class="like-button">Like</button>
+						</form>
+					<% } %>
 					</div>
 				<%}%>
 			</div>

@@ -6,26 +6,43 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <body>
 	<div class="phone-header">
-		<form id="login" action="/dreamlucid/login" method="GET">
-			<label for="userName">User Name</label>
-			<input id="login-username" type="text" name="userName"><br>
-			<label for="password">Password</label>
-			<input id="login-password" type="text" name="password"><br>
-			<button>Log In!</button>
-		</form>
-		<p>Or <a href="/dreamlucid/username">Create A New Account</a></p>
+		<% console.log(user) %>
+		<% if (user.logged_in === 2 ) {%>
+			<form id="login" action="/dreamlucid/login" method="GET">
+				<label for="userName">User Name</label>
+				<input id="login-username" type="text" name="userName"><br>
+				<label for="password">Password</label>
+				<input id="login-password" type="text" name="password"><br>
+				<button>Log In!</button>
+			</form>
+			<p>Or <a href="/dreamlucid/username">Create A New Account</a></p>
+		<% } if (user.logged_in === 1 ) {%>
+			<p id="welcome-text">Welcome, <a href="/dreamlucid/username/<%=user.id%>"><%=user.username%></a>!</p><br>
+			<form id="logout" action="/dreamlucid/login?_method=PUT" method="POST">
+				<button>Log Out</button>
+			</form>
+		<% } %>
 	</div>
 		<header>
-			<div id="log-in">
-				<form id="login" action="/dreamlucid/login" method="GET">
-					<label for="userName">User Name</label>
-					<input id="login-username" type="text" name="userName">
-					<label for="password">Password</label>
-					<input id="login-password" type="text" name="password">
-					<button>Log In!</button>
-				</form>
-				<p>Or <a href="/dreamlucid/username">Create A New Account</a></p>
-			</div>
+			<%if (user.logged_in === 2){ %>
+				<div id="log-in">
+					<form id="login" action="/dreamlucid/login" method="GET">
+						<label for="userName">User Name</label>
+						<input id="login-username" type="text" name="userName">
+						<label for="password">Password</label>
+						<input id="login-password" type="text" name="password">
+						<button>Log In!</button>
+					</form>
+					<p>Or <a href="/dreamlucid/username">Create A New Account</a></p>
+				</div>		
+			<% } if (user.logged_in === 1 ) {%>
+				<div id="log-out">
+					<p id="welcome-text">Welcome, <a href="/dreamlucid/username/<%=user.id%>"><%=user.username%></a>!</p>
+					<form id="logout" action="/dreamlucid/login?_method=PUT" method="POST">
+						<button>Log Out</button>
+					</form>
+				</div>
+			<% } %>
 			<h1 class="link-mainpage">Dream Lucid</h1>
 			<p id="header-text-small">Architecting the world of REM connections</p> 
 		</header>
@@ -42,7 +59,7 @@
 					<option value="comments" selected>Most Commented</option>
 				<%}%>
 				</select>
-			  <button>Submit</button>
+			  <button>Sort</button>
 			</form>
 			<%topics.forEach(function(topic){%>
 				<div class="wrapper topic-wrapper">		
@@ -51,7 +68,9 @@
 					<h4><%=topic.summary%></h4>
 				</div>
 			<%});%>
-			<button class="open-modal">Add New topic</button>
+			<% if (user.logged_in === 1 ) {%>
+				<button class="open-modal">Add New topic</button>
+			<% } %>
 			<div class="overlay"></div>
 			<div class="modal" id="modal-new-topic">
 				<button class="close">X</button> 
