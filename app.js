@@ -21,8 +21,12 @@ app.get('/', function (req, res){
 	res.redirect('/dreamlucid');
 })
 
-//geotagging; googlemaps API
-//create user page with stats
+//get geotag locations from html five
+//store locations under user.location
+//run get all of the locations and create a google maps with them
+//user will be able to go to "upload" page where they will be able to "upload a dream"- separate sqlite database "dreams"
+//dream attached to a specific user will be able to show up on google maps as a single marker with a link- link will allow you to be rerouted to dreams/useruploads/:userID/:dreamID
+//get text of the uploaded dream, parsed through soundcloud API
 
 
 app.post('/', function (req, res){
@@ -35,6 +39,10 @@ app.post('/', function (req, res){
 	db.get('SELECT * FROM users WHERE username=?', req.body.userName, function (err, user){
 		res.redirect('/dreamlucid/username/' + user.id + "/created")
 	})
+})
+
+app.get('/dreamlucid/map', function (req, res){
+	res.render('map.ejs');
 })
 
 app.get('/dreamlucid', function (req, res){ 
