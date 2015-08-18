@@ -26,7 +26,7 @@ app.get('/', function (req, res){
 //run get all of the locations and create a google maps with them
 //user will be able to go to "upload" page where they will be able to "upload a dream"- separate sqlite database "dreams"
 //dream attached to a specific user will be able to show up on google maps as a single marker with a link- link will allow you to be rerouted to dreams/useruploads/:userID/:dreamID
-//get text of the uploaded dream, parsed through soundcloud API
+//get text of the uploaded dream, 
 
 
 app.post('/', function (req, res){
@@ -39,10 +39,6 @@ app.post('/', function (req, res){
 	db.get('SELECT * FROM users WHERE username=?', req.body.userName, function (err, user){
 		res.redirect('/dreamlucid/username/' + user.id + "/created")
 	})
-})
-
-app.get('/dreamlucid/map', function (req, res){
-	res.render('map.ejs');
 })
 
 app.get('/dreamlucid', function (req, res){ 
@@ -63,7 +59,7 @@ app.get('/dreamlucid', function (req, res){
 		} else if (sort === "recent") {
 			console.log("here")
 			db.all('SELECT * FROM topics ORDER BY comment_update DESC', function (err, topics){
-				res.render('index.ejs', {topics: topics, user: "wow man users"});
+				res.render('index.ejs', {topics: topics, user: user});
 			})
 		}	
 		renderPage({"logged_in": 2});	
@@ -87,7 +83,7 @@ app.get('/dreamlucid/login', function (req, res){
 	db.get('SELECT * FROM users WHERE username=?', req.query.userName, function (err, user){
 		if (user) {
 			if (user.password === req.query.password) {
-				db.run('UPDATE users SET logged_in=? WHERE username=?', 1, req.cookies.user,function (err){
+				db.run('UPDATE users SET logged_in=? WHERE username=?', 1, req.query.userName,function (err){
 					if (err) throw err;
 					res.cookie('user', req.query.userName, { path: '/' });
 					res.cookie('pw', req.query.password, { path: '/' });
@@ -103,13 +99,14 @@ app.get('/dreamlucid/login', function (req, res){
 	})
 })
 
-app.put('/dreamlucid/login', function (req, res){
-	res.clearCookie('user', { path: '/' });
-	res.clearCookie('pw', { path: '/' });
+app.put('/dreamlucid/login', function (req, res){	
 	db.run('UPDATE users SET logged_in=? WHERE username=?', 2, req.cookies.user, function (err){
 		if (err) throw err;
 	})
 	res.redirect('/dreamlucid');
+
+	res.clearCookie('user', { path: '/' });
+	res.clearCookie('pw', { path: '/' });
 })
 
 app.post('/dreamlucid/layout', function (req, res){ 
