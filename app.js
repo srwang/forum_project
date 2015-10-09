@@ -21,14 +21,6 @@ app.get('/', function (req, res){
 	res.redirect('/dreamlucid');
 })
 
-//get geotag locations from html five
-//store locations under user.location
-//run get all of the locations and create a google maps with them
-//user will be able to go to "upload" page where they will be able to "upload a dream"- separate sqlite database "dreams"
-//dream attached to a specific user will be able to show up on google maps as a single marker with a link- link will allow you to be rerouted to dreams/useruploads/:userID/:dreamID
-//get text of the uploaded dream, 
-
-
 app.post('/', function (req, res){
 	res.cookie('user', req.body.userName);
 	res.cookie('pw', req.body.password);
@@ -51,15 +43,16 @@ app.get('/dreamlucid', function (req, res){
 			renderPage(thisUser);	
 		})
 	} else {
+		console.log(sort)
+		var user = {"logged_in": 2}
 		if (sort === "comments") {
-			var user = {"logged_in": 2}
 			db.all('SELECT * FROM topics ORDER BY comment_count DESC', function (err, topics){
 				res.render('index.ejs', {topics: topics, sort: sort, user: user});
 			})
 		} else if (sort === "recent") {
 			console.log("here")
 			db.all('SELECT * FROM topics ORDER BY comment_update DESC', function (err, topics){
-				res.render('index.ejs', {topics: topics, user: user});
+				res.render('index.ejs', {topics: topics, sort: sort, user: user});
 			})
 		}	
 		renderPage({"logged_in": 2});	
