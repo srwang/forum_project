@@ -166,9 +166,17 @@ app.get('/dreamlucid/topic/:topicID/createmap', function (req, res){
 				}
 			}
 		})
-		console.log(keywords)
 
-		keywords.forEach(function(keyword){
+		var newkeywords = [];
+		for (i=0; i<10; i++){
+			if (keywords.length > 0){
+				var word = keywords[Math.floor(Math.random()*keywords.length)];
+				newkeywords.push(word)
+				keywords.splice(keywords.indexOf(word), 1)				
+			}
+		}
+
+		newkeywords.forEach(function(keyword){
 			var apiKey = fs.readFileSync('secrets.json', 'utf-8');
 			apiKey = JSON.parse(apiKey).key;
 
@@ -178,7 +186,7 @@ app.get('/dreamlucid/topic/:topicID/createmap', function (req, res){
 			request('https://api.instagram.com/v1/tags/' + searchTerm + '/media/recent?client_id=' + apiKey, function (error, response, body){
 				if (!error && response.statusCode == 200) {
 					var results = JSON.parse(body).data;
-					var image = _.pluck(results, "images")[imageNum].standard_resolution.url;	
+					var image = _.pluck(results, "images")[imageNum].standard_resolution.url;
 
 					db.get('SELECT instaimages FROM topics where id=?', topic_id, function(err, t){
 						db.run('UPDATE topics SET instaimages=? WHERE id=?', t.instaimages + ", " + image, topic_id, function (err){
@@ -192,7 +200,9 @@ app.get('/dreamlucid/topic/:topicID/createmap', function (req, res){
 	db.get('SELECT * FROM topics where id=?', topic_id, function(err, topic){
 		console.log('***********')
 		console.log(topic)
-		res.render('map.ejs', {topic: topic, images: topic.instaimages.split(', ')})
+		if (topic.instaimages.split(', ').length === 10) {
+			res.render('map.ejs', {topic: topic, images: topic.instaimages.split(', ')};
+		}
 	})
 })
 
