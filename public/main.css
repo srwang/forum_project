@@ -57,8 +57,12 @@ header button:hover {
 	color: gray;
 }
 
-.open-modal, .reply-button, .edit-button {
+.open-modal, .reply-button, .edit-button, #show-topics-button, #collapse-topics-button {
 	float: right;
+}
+
+#collapse-topics-button {
+	display: none;
 }
 
 * {
@@ -288,10 +292,6 @@ header {
 .modal {
 	position: fixed;
 	left: 0px;
-}
-
-.open-modal {
-	float: left;
 }
 
 .overlay {

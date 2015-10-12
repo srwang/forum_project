@@ -10,6 +10,22 @@ $(document).ready(function(){
  		location.href = "/dreamlucid";
  	})
 
+ 	$('#show-topics-button').on('click', function(){
+ 		for (i=6; i<=$('.topic-wrapper').length; i++){
+	 		$('#hidden-' + i).toggle();	
+ 		}
+ 		$('#collapse-topics-button').toggle();
+ 		$(this).toggle();
+ 	})
+
+ 	$('#collapse-topics-button').on('click', function(){
+ 		$('#show-topics-button').toggle();
+ 		for (i=6; i<=$('.topic-wrapper').length; i++){
+	 		$('#hidden-' + i).toggle();	
+ 		}
+ 		$(this).toggle();
+ 	})
+
  	$('.open-modal').on('click', function (){
 		$('.modal').toggle();
 		$('.overlay').toggle();

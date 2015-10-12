@@ -6,7 +6,6 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <body>
 	<div class="phone-header">
-		<% console.log(user) %>
 		<% if (user.logged_in === 2 ) {%>
 			<form id="login" action="/dreamlucid/login" method="GET">
 				<label for="userName">User Name</label>
@@ -61,15 +60,24 @@
 				</select>
 			  <button>Sort</button>
 			</form>
-			<%topics.forEach(function(topic){%>
+			<%for (var i=0; i<5; i++){%>
 				<div class="wrapper topic-wrapper">		
-					<p id="comment-count"><%=topic.comment_count%> Comments</p>
-					<h3><a href="/dreamlucid/topic/<%=topic.id%>"><%=topic.title%></a></h3>
-					<h4><%=topic.summary%></h4>
+					<p id="comment-count"><%=topics[i].comment_count%> Comments</p>
+					<h3><a href="/dreamlucid/topic/<%=topics[i].id%>"><%=topics[i].title%></a></h3>
+					<h4><%=topics[i].summary%></h4>
 				</div>
-			<%});%>
+			<%}%>
+			<%for (var i=5; i<topics.length; i++) {%>
+				<div class="wrapper topic-wrapper" id="hidden-<%=topics[i].id%>" style="display: none;">		
+					<p id="comment-count"><%=topics[i].comment_count%> Comments</p>
+					<h3><a href="/dreamlucid/topic/<%=topics[i].id%>"><%=topics[i].title%></a></h3>
+					<h4><%=topics[i].summary%></h4>
+				</div>
+			<%}%>
+			<button id="show-topics-button">+ See All Posts</button>
+			<button id="collapse-topics-button">- Collapse Posts</button>
 			<% if (user.logged_in === 1 ) {%>
-				<button class="open-modal">Add New topic</button>
+				<button class="open-modal">Post a Dream</button>
 			<% } %>
 			<div class="overlay"></div>
 			<div class="modal" id="modal-new-topic">

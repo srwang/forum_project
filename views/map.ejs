@@ -12,8 +12,20 @@
 	</div>
 	<div class="pure-g">
 		<div class="main-content clearfix pure-u-3-5">
-			<div id="map-canvas">
-			</div>
+			<h3>Click to choose which images you would like to include in your mood map. We have selected an instagram smattering for you based on your topic summary. To upload your own images, use the "upload" button at the bottom of the page.</h3>
+			<form action="">
+				<% images.forEach(function(image){%>
+					<input type="checkbox" name="image" value="<%=image%>"><img src="<%=image%>"></input>
+				<%});%>  
+				<button type="submit">Submit</button>
+			</form>
+
+			<form action="/upload" method="post" enctype="multipart/form-data">  
+				<label for="file">Select your image:</label>
+				<input type="file" name="file" id="file" />
+				<span class="hint">Supported files: jpg, jpeg, png.</span>
+				<button type="submit">upload</button>
+			</form>  
 		</div>
 	</div>
 </body>

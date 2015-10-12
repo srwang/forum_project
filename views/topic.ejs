@@ -52,6 +52,9 @@
 				<div class="wrapper topic-wrapper first-post clearfix">		
 					<p>*<%=topic.body%></p>
 					<p>Posted by <%=topic.username%> at <%=topic.created_at%></p>
+					<% if (user.logged_in === 1 && user.username === topic.username){%>
+						<button class="mood-map-button"><a href="/dreamlucid/topic/<%=topic.id%>/createmap">Add Mood Map</a></button>
+					<%}%>
 					<% if (user.logged_in === 1 ) {%>
 						<button class="reply-button">Leave Comment</button>
 					<% } %>

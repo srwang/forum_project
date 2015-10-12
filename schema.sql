@@ -17,6 +17,8 @@ CREATE TABLE topics (
 	title TEXT,
 	summary TEXT,
 	body TEXT,
+	images TEXT,
+	instaimages TEXT,
 	comment_count INTEGER,
 	comment_update TIMESTAMP,
 	username TEXT,
