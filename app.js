@@ -177,6 +177,7 @@ app.get('/dreamlucid/topic/:topicID/createmap', function (req, res){
 		}
 
 		newkeywords.forEach(function(keyword){
+			console.log(keyword)
 			var apiKey = fs.readFileSync('secrets.json', 'utf-8');
 			apiKey = JSON.parse(apiKey).key;
 
@@ -191,18 +192,30 @@ app.get('/dreamlucid/topic/:topicID/createmap', function (req, res){
 					db.get('SELECT instaimages FROM topics where id=?', topic_id, function(err, t){
 						db.run('UPDATE topics SET instaimages=? WHERE id=?', t.instaimages + ", " + image, topic_id, function (err){
 							if (err) throw err;
+							console.log(t.instaimages.split(', ').length)
 						});						
 					})
 				}
 			})	
 		})
 	})
-	db.get('SELECT * FROM topics where id=?', topic_id, function(err, topic){
-		console.log('***********')
-		console.log(topic)
-		if (topic.instaimages.split(', ').length === 10) {
-			res.render('map.ejs', {topic: topic, images: topic.instaimages.split(', ')};
-		}
+
+	var myVar = setInterval(function(){ 
+		db.get('SELECT * FROM topics where id=?', topic_id, function(err, topic){
+			console.log(topic.instaimages.split(', ').length, req.cookies.wordNum)
+			if (topic.instaimages.split(', ').length === 8) {
+				console.log('yes')
+				res.clearCookie('wordNum');
+				res.redirect('/dreamlucid/topic/' + topic.id + '/template')
+				clearInterval(myVar)
+			}
+		})
+	}, 1000);
+})
+
+app.get('/dreamlucid/topic/:topicID/template', function (req, res){
+	db.get('SELECT * FROM topics where id=?', parseInt(req.params.topicID), function(err, topic){
+		res.render('map.ejs', {topic: topic, images: topic.instaimages.split(', ')});
 	})
 })
 

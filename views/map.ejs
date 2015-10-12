@@ -15,7 +15,11 @@
 			<h3>Click to choose which images you would like to include in your mood map. We have selected an instagram smattering for you based on your topic summary. To upload your own images, use the "upload" button at the bottom of the page.</h3>
 			<form action="">
 				<% images.forEach(function(image){%>
-					<input type="checkbox" name="image" value="<%=image%>"><img src="<%=image%>"></input>
+					<% if (image !== undefined){%>
+						<div class="image-box"> 
+						</div>
+					<%}%>
+					<input type="checkbox" name="image" value="<%=image%>"></input>
 				<%});%>  
 				<button type="submit">Submit</button>
 			</form>
@@ -31,3 +35,4 @@
 </body>
 	<script src="http://localhost:3000/main.js"></script>
 <html>
+<!-- style="background-image:url('<%=image%>');" -->

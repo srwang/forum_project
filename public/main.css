@@ -304,5 +304,12 @@ header {
 	display: none;
 }
 
+.image-box {
+	height: 250px;
+	width: 250px;
+	background-color: blue;
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	float: left;
 }
-
